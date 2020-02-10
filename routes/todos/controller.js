@@ -4,7 +4,10 @@ const { Todos } = require("../../models");
 module.exports = {
     getAll: async (req, res) => {
         try {
-            const result = await Todos.find({}).populate("user", "userName email");
+            const result = await Todos.find({}).populate(
+                "user",
+                "userName email"
+            );
 
             res.status(200).send({ message: "Show data todos", data: result });
         } catch (error) {
@@ -20,10 +23,36 @@ module.exports = {
             console.log(error);
         }
     },
-    getById: (req, res) => {
-        res.status(200).send({ message: "Todos route by id" });
+    deleteById: async (req, res) => {
+        try {
+            const deleted = await Todos.findByIdAndDelete(req.params.id);
+
+            if (!deleted) res.status(404).send("No item found");
+            res.status(200).send({message: "Deleted"});
+        } catch (error) {
+            console.log(error);
+        }
     },
-    getByUsername: (req, res) => {
-        res.status(200).send({ message: "Todos route by username" });
-    }
+    updateById: async (req, res) => {
+        try {
+            let update = await Todos.findByIdAndUpdate(req.params.id, req.body)
+            const result= await update.save()
+            
+            res.status(200).send({ message: "Show data todos", data: result });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    getByUsername: async (req, res) => {
+        try {
+            const result = await Todos.findOne({ todo: req.params.todo }, function (err, todos) {})
+             
+
+            res.status(200).send({ message: "Show one todo", data: result });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    
+
 };

@@ -17,6 +17,7 @@ mongoose
     })
     .then(() => {
         console.log("Connected to mongo database");
+        
     })
     .catch(error => {
         console.log("There is something wrong", error);
