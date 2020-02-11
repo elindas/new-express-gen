@@ -26,7 +26,7 @@ module.exports = {
     },
     getByUsername: async (req, res) => {
         try {
-            const result = await Users.findOne({ userName: req.params.username }, function (err, users) {})
+            const result = await Users.findOne({ userName: req.params.username })
              
 
             res.status(200).send({ message: "Show by username", data: result });
