@@ -1,4 +1,5 @@
 const { Users } = require("../../models");
+const {hashPassword}= require("../../helpers")
 
 module.exports = {
     getAll: async (req, res) => {
@@ -29,10 +30,13 @@ module.exports = {
         try {
             const data = req.body;
             const file = req.file;
+            const hash= await hashPassword(req.body.password)
+
 
             const result = await Users.create({
                 ...data,
-                avatar: file === undefined ? null : file.path
+                avatar: file === undefined ? null : file.path,
+                password: hash
             });
 
             res.status(200).send({
